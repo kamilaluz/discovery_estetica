@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discovery — Clínica Estética</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose: #C9A49A;
+    --rose-light: #E8D5D0;
+    --rose-pale: #F5EEEC;
+    --gold: #C8A97E;
+    --gold-light: #E8D9C5;
+    --white: #FDFAF8;
+    --dark: #2C2320;
+    --mid: #6B5550;
+    --light-text: #9C8480;
+    --border: #E0D0CB;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--white);
+    color: var(--dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    background: linear-gradient(160deg, #2C2320 0%, #4A312B 50%, #6B5550 100%);
+    position: relative; overflow: hidden;
+    padding: 60px 40px; text-align: center;
+  }
+  .cover::before {
+    content: ''; position: absolute; top: -80px; right: -80px;
+    width: 420px; height: 420px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,164,154,0.18) 0%, transparent 70%);
+  }
+  .cover::after {
+    content: ''; position: absolute; bottom: -60px; left: -60px;
+    width: 320px; height: 320px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,169,126,0.14) 0%, transparent 70%);
+  }
+  .cover-ornament {
+    width: 1px; height: 60px;
+    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+    margin: 0 auto 32px;
+  }
+  .cover-eyebrow {
+    font-weight: 300; font-size: 11px; letter-spacing: 4px;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 20px;
+    opacity: 0; animation: fadeUp 0.8s 0.3s ease forwards;
+  }
+  .cover-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 6vw, 64px);
+    color: var(--white); line-height: 1.15; margin-bottom: 12px;
+    opacity: 0; animation: fadeUp 0.8s 0.5s ease forwards;
+  }
+  .cover-title em { font-style: italic; color: var(--rose-light); }
+  .cover-subtitle {
+    font-size: 15px; font-weight: 300; color: rgba(253,250,248,0.65);
+    max-width: 520px; line-height: 1.7; margin: 0 auto 48px;
+    opacity: 0; animation: fadeUp 0.8s 0.7s ease forwards;
+  }
+  .cover-meta {
+    display: flex; gap: 40px; justify-content: center;
+    flex-wrap: wrap; margin-bottom: 48px;
+    opacity: 0; animation: fadeUp 0.8s 0.9s ease forwards;
+  }
+  .cover-meta-item { text-align: center; }
+  .cover-meta-num { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--gold); }
+  .cover-meta-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(253,250,248,0.45); }
+  .btn-start {
+    background: linear-gradient(135deg, var(--rose) 0%, var(--gold) 100%);
+    color: var(--white); border: none; padding: 16px 52px;
+    font-family: 'Jost', sans-serif; font-size: 13px; font-weight: 500;
+    letter-spacing: 3px; text-transform: uppercase;
+    cursor: pointer; transition: all 0.3s;
+    opacity: 0; animation: fadeUp 0.8s 1.1s ease forwards;
+    position: relative; overflow: hidden;
+  }
+  .btn-start::before {
+    content: ''; position: absolute; inset: 0;
+    background: rgba(255,255,255,0.15); opacity: 0; transition: opacity 0.3s;
+  }
+  .btn-start:hover::before { opacity: 1; }
+  .btn-start:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0,0,0,0.25); }
+
+  /* ── QUIZ ── */
+  .quiz-shell { display: none; min-height: 100vh; background: var(--white); }
+  .quiz-shell.active { display: block; }
+
+  .progress-bar-wrap {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: 3px; background: var(--border); z-index: 100;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--rose), var(--gold));
+    transition: width 0.6s cubic-bezier(0.4,0,0.2,1); width: 0%;
+  }
+  .progress-label {
+    position: fixed; top: 14px; right: 24px;
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--light-text); z-index: 100;
+  }
+
+  .section-header { padding: 72px 40px 0; max-width: 800px; margin: 0 auto; }
+  .section-badge {
+    display: inline-block; font-size: 10px; font-weight: 500;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: var(--gold); border: 1px solid var(--gold-light);
+    padding: 5px 14px; margin-bottom: 20px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 4vw, 38px); line-height: 1.2; margin-bottom: 10px;
+  }
+  .section-desc {
+    font-size: 14px; font-weight: 300; color: var(--mid);
+    line-height: 1.7; margin-bottom: 40px;
+  }
+
+  .subsection-label {
+    display: flex; align-items: center; gap: 14px; margin: 32px 0 18px;
+  }
+  .subsection-label-line { flex: 1; height: 1px; background: var(--border); }
+  .subsection-label-text {
+    font-size: 10px; font-weight: 500; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--light-text); white-space: nowrap;
+  }
+
+  .step { display: none; max-width: 800px; margin: 0 auto; padding: 0 40px 120px; }
+  .step.active { display: block; animation: slideIn 0.45s ease; }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── PROBLEM CARD ── */
+  .problem-card {
+    margin-bottom: 20px; border: 1px solid var(--border);
+    background: var(--white); position: relative; overflow: hidden;
+  }
+  .problem-card::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px; background: linear-gradient(to bottom, var(--rose), var(--gold));
+  }
+  .problem-header {
+    padding: 16px 22px 14px 26px;
+    border-bottom: 1px solid var(--rose-pale);
+    display: flex; align-items: baseline; gap: 12px;
+  }
+  .problem-number {
+    font-size: 10px; font-weight: 500; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--rose); flex-shrink: 0;
+  }
+  .problem-title {
+    font-family: 'Playfair Display', serif; font-size: 16px; line-height: 1.4;
+  }
+  .problem-body { padding: 20px 28px 24px 28px; display: flex; flex-direction: column; gap: 20px; }
+
+  /* criterion-row & criterion-question now inside the SCALE block below */
+
+  /* ── SCALE ── */
+
+  /* Selected-state fill colours — one per position, same palette as the form */
+  :root {
+    --sc1-on: #C9A49A;   /* rose        */
+    --sc2-on: #C0937F;   /* rose-warm   */
+    --sc3-on: #BAA082;   /* warm mid    */
+    --sc4-on: #C8A97E;   /* gold        */
+    --sc5-on: #A8843A;   /* gold-deep   */
+  }
+
+  /* criterion-row: centre everything */
+  .criterion-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 0;
+  }
+  .criterion-question {
+    font-size: 13.5px; color: var(--dark); line-height: 1.5;
+    text-align: center; max-width: 540px;
+  }
+
+  /* scale-wrap: [left label]  [5 buttons]  [right label] */
+  .scale-wrap {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  /* the five square buttons */
+  .scale-track {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .scale-track input { display: none; }
+
+  .scale-track label {
+    width: 48px; height: 48px;
+    border-radius: 10px;
+    border: 2px solid var(--border);
+    background: transparent;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 15px; font-weight: 600;
+    color: var(--light-text);
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+    user-select: none;
+    flex-shrink: 0;
+  }
+
+  /* selected: fill with the position colour */
+  .scale-track input:checked + label[data-pos="1"] { background: var(--sc1-on); border-color: var(--sc1-on); color: white; }
+  .scale-track input:checked + label[data-pos="2"] { background: var(--sc2-on); border-color: var(--sc2-on); color: white; }
+  .scale-track input:checked + label[data-pos="3"] { background: var(--sc3-on); border-color: var(--sc3-on); color: white; }
+  .scale-track input:checked + label[data-pos="4"] { background: var(--sc4-on); border-color: var(--sc4-on); color: white; }
+  .scale-track input:checked + label[data-pos="5"] { background: var(--sc5-on); border-color: var(--sc5-on); color: white; }
+
+  /* no hover effect — extreme labels already give context */
+
+  /* extreme labels flanking the buttons */
+  .scale-extreme {
+    font-size: 11px; font-weight: 400;
+    line-height: 1.3; flex-shrink: 0;
+    white-space: nowrap; max-width: 72px;
+  }
+  .scale-extreme.left  { text-align: right; color: var(--rose); }
+  .scale-extreme.right { text-align: left;  color: #A8843A; }
+
+  /* ── CONTEXT CARD ── */
+  .context-card {
+    margin-bottom: 20px; padding: 18px 22px 20px 26px;
+    border: 1px solid var(--border); border-left: 3px solid var(--gold-light);
+    background: var(--rose-pale);
+  }
+  .context-title {
+    font-size: 10px; font-weight: 500; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 14px;
+  }
+  .context-questions { display: flex; flex-direction: column; gap: 14px; }
+  .context-label {
+    font-size: 13.5px; color: var(--dark); margin-bottom: 8px; line-height: 1.5;
+  }
+
+  /* ── SIMPLE QUESTION CARD ── */
+  .question-card {
+    margin-bottom: 18px; padding: 18px 22px 18px 26px;
+    border: 1px solid var(--border); background: var(--white); position: relative;
+  }
+  .question-card::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px; background: linear-gradient(to bottom, var(--rose), var(--gold));
+  }
+  .q-number {
+    font-size: 10px; font-weight: 500; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--rose); margin-bottom: 7px;
+  }
+  .q-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px; line-height: 1.5; margin-bottom: 6px;
+  }
+  .q-help {
+    font-size: 13px; font-weight: 300; color: var(--light-text);
+    margin-bottom: 13px; line-height: 1.6;
+  }
+
+  /* radio */
+  .radio-group { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+  .radio-group input { display: none; }
+  .radio-group label {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 14px; border: 1px solid var(--border);
+    cursor: pointer; font-size: 13.5px; color: var(--dark); transition: all 0.18s;
+  }
+  .radio-group label::before {
+    content: ''; width: 14px; height: 14px;
+    border: 1.5px solid var(--border); border-radius: 50%;
+    flex-shrink: 0; transition: all 0.18s;
+  }
+  .radio-group input:checked + label { border-color: var(--rose); background: var(--rose-pale); }
+  .radio-group input:checked + label::before { background: var(--rose); border-color: var(--rose); }
+
+  /* checkbox */
+  .check-group { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .check-group input { display: none; }
+  .check-group label {
+    padding: 8px 13px; border: 1px solid var(--border);
+    cursor: pointer; font-size: 13px; color: var(--dark); transition: all 0.18s;
+  }
+  .check-group input:checked + label { border-color: var(--rose); background: var(--rose-pale); }
+
+  /* textarea */
+  .q-textarea {
+    width: 100%; min-height: 78px; border: 1px solid var(--border);
+    padding: 10px 12px; font-family: 'Jost', sans-serif;
+    font-size: 13.5px; font-weight: 300; color: var(--dark);
+    resize: vertical; outline: none; transition: border-color 0.2s; background: transparent;
+  }
+  .q-textarea:focus { border-color: var(--rose); }
+
+  .q-input {
+    width: 100%; border: none; border-bottom: 1px solid var(--border);
+    padding: 10px 0; font-family: 'Jost', sans-serif;
+    font-size: 13.5px; color: var(--dark); outline: none;
+    background: transparent; transition: border-color 0.2s;
+  }
+  .q-input:focus { border-bottom-color: var(--rose); }
+
+  /* nav */
+  .step-nav {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: rgba(253,250,248,0.96); backdrop-filter: blur(12px);
+    border-top: 1px solid var(--border); padding: 14px 40px;
+    display: flex; align-items: center; justify-content: space-between; z-index: 90;
+  }
+  .btn-nav {
+    border: 1px solid var(--border); background: transparent;
+    color: var(--mid); padding: 10px 26px; font-family: 'Jost', sans-serif;
+    font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .btn-nav:hover { border-color: var(--rose); color: var(--rose); }
+  .btn-nav.primary {
+    background: linear-gradient(135deg, var(--rose) 0%, var(--gold) 100%);
+    border-color: transparent; color: white;
+  }
+  .btn-nav.primary:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(201,164,154,0.35); }
+  .btn-nav:disabled { opacity: 0.3; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+
+  .step-dots { display: flex; gap: 6px; }
+  .step-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); transition: all 0.3s; }
+  .step-dot.active { background: var(--rose); width: 20px; border-radius: 3px; }
+  .step-dot.done { background: var(--gold); }
+
+  /* thank you */
+  .thankyou {
+    display: none; min-height: 100vh; align-items: center;
+    justify-content: center; flex-direction: column; text-align: center;
+    padding: 80px 40px;
+    background: linear-gradient(160deg, #2C2320 0%, #4A312B 60%, #6B5550 100%);
+  }
+  .thankyou.active { display: flex; animation: fadeUp 0.8s ease; }
+  .thankyou-icon {
+    width: 70px; height: 70px; border: 1px solid var(--gold);
+    border-radius: 50%; display: flex; align-items: center;
+    justify-content: center; margin: 0 auto 28px; font-size: 24px;
+  }
+  .thankyou h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 5vw, 46px); color: var(--white); margin-bottom: 14px;
+  }
+  .thankyou h2 em { font-style: italic; color: var(--rose-light); }
+  .thankyou p {
+    font-size: 14px; font-weight: 300; color: rgba(253,250,248,0.65);
+    max-width: 460px; line-height: 1.8; margin: 0 auto 40px;
+  }
+  .summary-box {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(201,164,154,0.25);
+    padding: 26px 32px; max-width: 540px; width: 100%;
+    text-align: left; margin-bottom: 32px;
+  }
+  .summary-box h3 {
+    font-family: 'Playfair Display', serif; font-size: 16px; color: var(--gold);
+    margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid rgba(200,169,126,0.2);
+  }
+  .summary-item {
+    display: flex; justify-content: space-between;
+    align-items: baseline; margin-bottom: 9px; font-size: 13px;
+  }
+  .summary-item-label { color: rgba(253,250,248,0.5); font-weight: 300; }
+  .summary-item-value { color: var(--rose-light); font-weight: 400; text-align: right; max-width: 55%; }
+  .btn-download {
+    background: transparent; border: 1px solid var(--gold);
+    color: var(--gold); padding: 12px 36px; font-family: 'Jost', sans-serif;
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    cursor: pointer; transition: all 0.3s;
+  }
+  .btn-download:hover { background: var(--gold); color: var(--dark); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 600px) {
+    .step { padding: 0 16px 120px; }
+    .section-header { padding: 60px 16px 0; }
+    .problem-header { padding-left: 20px; padding-right: 14px; }
+    .problem-body { padding-left: 20px; padding-right: 14px; }
+    .question-card, .context-card { padding-left: 20px; padding-right: 14px; }
+    .step-nav { padding: 12px 16px; }
+    .btn-nav { padding: 9px 12px; font-size: 11px; }
+    .scale-track label::after,
+    .scale-track label::before { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ COVER ═══════════ -->
+<div class="cover" id="coverPage">
+  <div class="cover-ornament"></div>
+  <p class="cover-eyebrow">Discovery · Clínica Estética</p>
+  <h1 class="cover-title">Mapeamento de <em>Dores</em><br>&amp; Prioridades</h1>
+  <p class="cover-subtitle">Suas respostas vão definir o que o sistema precisa resolver primeiro — com precisão e sem desperdício.</p>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><div class="cover-meta-num">7</div><div class="cover-meta-label">Blocos</div></div>
+    <div class="cover-meta-item"><div class="cover-meta-num">~15</div><div class="cover-meta-label">Minutos</div></div>
+    <div class="cover-meta-item"><div class="cover-meta-num">MVP</div><div class="cover-meta-label">Foco</div></div>
+  </div>
+  <button class="btn-start" onclick="startQuiz()">Iniciar</button>
+</div>
+
+<!-- ═══════════ QUIZ ═══════════ -->
+<div class="quiz-shell" id="quizShell">
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <div class="progress-label" id="progressLabel">1 / 7</div>
+
+  <!-- ══════════ BLOCO 1 — PERFIL ══════════ -->
+  <div class="step active" id="step1">
+    <div class="section-header">
+      <span class="section-badge">Bloco 01</span>
+      <h2 class="section-title">Quem está respondendo?</h2>
+      <p class="section-desc">Precisamos entender o seu papel para calibrar as perguntas e dar o peso certo às suas respostas.</p>
+    </div>
+
+    <div class="question-card">
+      <div class="q-number">1.1</div>
+      <div class="q-text">Qual é o seu nome e cargo?</div>
+      <input class="q-input" type="text" id="q_nome" placeholder="Ex.: Ana Beatriz — Recepcionista">
+    </div>
+
+    <div class="question-card">
+      <div class="q-number">1.2</div>
+      <div class="q-text">Qual é o seu setor principal?</div>
+      <div class="radio-group">
+        <input type="radio" name="q_setor" id="s1" value="Recepção / Atendimento"><label for="s1">Recepção / Atendimento ao Paciente</label>
+        <input type="radio" name="q_setor" id="s2" value="Comercial / Vendas"><label for="s2">Comercial / Vendas &amp; Fechamento de Pacotes</label>
+        <input type="radio" name="q_setor" id="s3" value="Enfermagem"><label for="s3">Enfermagem &amp; Apoio a Procedimentos</label>
+        <input type="radio" name="q_setor" id="s4" value="Médico / Procedimentos"><label for="s4">Médico / Execução de Procedimentos</label>
+        <input type="radio" name="q_setor" id="s5" value="Fisioterapia / Tecnologia"><label for="s5">Fisioterapia / Tecnologia Estética</label>
+        <input type="radio" name="q_setor" id="s6" value="Administrativo / Financeiro"><label for="s6">Administrativo / Financeiro</label>
+        <input type="radio" name="q_setor" id="s7" value="Marketing"><label for="s7">Marketing &amp; Comunicação</label>
+        <input type="radio" name="q_setor" id="s8" value="Direção / Coordenação"><label for="s8">Direção / Coordenação Estratégica</label>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <div class="q-number">1.3</div>
+      <div class="q-text">Há quanto tempo você trabalha na clínica?</div>
+      <div class="radio-group">
+        <input type="radio" name="q_tempo" id="t1" value="< 6 meses"><label for="t1">Menos de 6 meses</label>
+        <input type="radio" name="q_tempo" id="t2" value="6–12 meses"><label for="t2">6 a 12 meses</label>
+        <input type="radio" name="q_tempo" id="t3" value="1–3 anos"><label for="t3">1 a 3 anos</label>
+        <input type="radio" name="q_tempo" id="t4" value="> 3 anos"><label for="t4">Mais de 3 anos</label>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <div class="q-number">1.4</div>
+      <div class="q-text">Você participa de decisões financeiras da clínica?</div>
+      <div class="radio-group">
+        <input type="radio" name="q_financeiro" id="fin1" value="Sim"><label for="fin1">Sim</label>
+        <input type="radio" name="q_financeiro" id="fin2" value="Às vezes"><label for="fin2">Às vezes</label>
+        <input type="radio" name="q_financeiro" id="fin3" value="Não"><label for="fin3">Não</label>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <div class="q-number">1.5</div>
+      <div class="q-text">Quais ferramentas você usa hoje? <span style="font-weight:300;font-size:12px;">(pode marcar mais de uma)</span></div>
+      <div class="check-group">
+        <input type="checkbox" id="f1" name="q_ferramentas" value="Agenda"><label for="f1">Agenda</label>
+        <input type="checkbox" id="f2" name="q_ferramentas" value="Prontuário eletrônico"><label for="f2">Prontuário eletrônico</label>
+        <input type="checkbox" id="f3" name="q_ferramentas" value="Sistema financeiro"><label for="f3">Sistema financeiro</label>
+        <input type="checkbox" id="f4" name="q_ferramentas" value="Planilhas"><label for="f4">Planilhas</label>
+        <input type="checkbox" id="f5" name="q_ferramentas" value="WhatsApp"><label for="f5">WhatsApp</label>
+        <input type="checkbox" id="f6" name="q_ferramentas" value="Outro"><label for="f6">Outro</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ BLOCO 2 — AGENDA ══════════ -->
+  <div class="step" id="step2">
+    <div class="section-header">
+      <span class="section-badge">Bloco 02</span>
+      <h2 class="section-title">Agenda &amp; Capacidade Operacional</h2>
+      <p class="section-desc">Para cada problema, avalie as 4 dimensões.</p>
+    </div>
+    <div id="problems_agenda"></div>
+  </div>
+
+  <!-- ══════════ BLOCO 3 — FINANCEIRO ══════════ -->
+  <div class="step" id="step3">
+    <div class="section-header">
+      <span class="section-badge">Bloco 03</span>
+      <h2 class="section-title">Financeiro &amp; Clareza de Dados</h2>
+      <p class="section-desc">Continue avaliando cada problema com as 4 dimensões.</p>
+    </div>
+    <div id="problems_financeiro"></div>
+  </div>
+
+  <!-- ══════════ BLOCO 4 — ESTOQUE, CONTRATOS E RECEBIMENTOS ══════════ -->
+  <div class="step" id="step4">
+    <div class="section-header">
+      <span class="section-badge">Bloco 04</span>
+      <h2 class="section-title">Estoque, Contratos &amp; Recebimentos</h2>
+      <p class="section-desc">Continue avaliando cada problema com as 4 dimensões.</p>
+    </div>
+
+    <div class="subsection-label">
+      <div class="subsection-label-line"></div>
+      <span class="subsection-label-text">Estoque</span>
+      <div class="subsection-label-line"></div>
+    </div>
+    <div id="problems_estoque"></div>
+
+    <div class="subsection-label">
+      <div class="subsection-label-line"></div>
+      <span class="subsection-label-text">Contratos de Fornecedores</span>
+      <div class="subsection-label-line"></div>
+    </div>
+    <div id="problems_contratos"></div>
+
+    <div class="subsection-label">
+      <div class="subsection-label-line"></div>
+      <span class="subsection-label-text">Recebimentos</span>
+      <div class="subsection-label-line"></div>
+    </div>
+    <div id="problems_recebimentos"></div>
+  </div>
+
+  <!-- ══════════ BLOCO 5 — COMERCIAL E GOVERNANÇA ══════════ -->
+  <div class="step" id="step5">
+    <div class="section-header">
+      <span class="section-badge">Bloco 05</span>
+      <h2 class="section-title">Comercial &amp; Governança</h2>
+      <p class="section-desc">Como a clínica converte pacientes e quão visível é a gestão estratégica.</p>
+    </div>
+
+    <div class="subsection-label">
+      <div class="subsection-label-line"></div>
+      <span class="subsection-label-text">Comercial</span>
+      <div class="subsection-label-line"></div>
+    </div>
+    <div id="problems_comercial"></div>
+
+    <div class="subsection-label">
+      <div class="subsection-label-line"></div>
+      <span class="subsection-label-text">Governança e Visão Estratégica</span>
+      <div class="subsection-label-line"></div>
+    </div>
+    <div id="problems_governanca"></div>
+  </div>
+
+  <!-- ══════════ BLOCO 6 — TOMADA DE DECISÃO E IMPACTO ══════════ -->
+  <div class="step" id="step6">
+    <div class="section-header">
+      <span class="section-badge">Bloco 06</span>
+      <h2 class="section-title">Tomada de Decisão &amp; Impacto</h2>
+      <p class="section-desc">Como as decisões são tomadas hoje — e o custo real dos problemas identificados.</p>
+    </div>
+
+    <div class="question-card">
+      <div class="q-number">37</div>
+      <div class="q-text">Quais decisões você precisa tomar com frequência? <span style="font-weight:300;font-size:12px;">(marque todas)</span></div>
+      <div class="check-group">
+        <input type="checkbox" id="dec1" name="q_decisoes" value="Precificação"><label for="dec1">Precificação de procedimentos</label>
+        <input type="checkbox" id="dec2" name="q_decisoes" value="Promoções"><label for="dec2">Promoções / campanhas</label>
+        <input type="checkbox" id="dec3" name="q_decisoes" value="Compra de insumos"><label for="dec3">Compra de insumos</label>
+        <input type="checkbox" id="dec4" name="q_decisoes" value="Contratação"><label for="dec4">Contratação de equipe</label>
+        <input type="checkbox" id="dec5" name="q_decisoes" value="Tecnologia"><label for="dec5">Investimento em tecnologia</label>
+        <input type="checkbox" id="dec6" name="q_decisoes" value="Outros"><label for="dec6">Outros</label>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <div class="q-number">38</div>
+      <div class="q-text">Você consegue tomar essas decisões com segurança hoje?</div>
+      <div class="radio-group">
+        <input type="radio" name="q_decisao_seg" id="ds1" value="Sim"><label for="ds1">Sim, tenho dados confiáveis</label>
+        <input type="radio" name="q_decisao_seg" id="ds2" value="Parcialmente"><label for="ds2">Parcialmente</label>
+        <input type="radio" name="q_decisao_seg" id="ds3" value="Não"><label for="ds3">Não</label>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <div class="q-number">39</div>
+      <div class="q-text">Quais decisões você sente que são tomadas mais no "feeling" do que com base em dados?</div>
+      <textarea class="q-textarea" id="q_feeling" placeholder="Ex.: Definição de preço, quando contratar, se vale a pena uma nova tecnologia..."></textarea>
+    </div>
+
+    <div class="question-card">
+      <div class="q-number">40</div>
+      <div class="q-text">Que informações você gostaria de ter para tomar melhores decisões?</div>
+      <div class="q-help">Descreva livremente — essa resposta é ouro para o produto.</div>
+      <textarea class="q-textarea" id="q_info_desejada" placeholder="Ex.: Qual procedimento dá mais lucro, quantos pacientes voltam, custo real por atendimento..."></textarea>
+    </div>
+
+    <div class="subsection-label">
+      <div class="subsection-label-line"></div>
+      <span class="subsection-label-text">Impacto no Tempo</span>
+      <div class="subsection-label-line"></div>
+    </div>
+
+    <div class="question-card">
+      <div class="q-number">41</div>
+      <div class="q-text">Quanto tempo você gasta por semana com gestão financeira?</div>
+      <div class="radio-group">
+        <input type="radio" name="q_tempo_fin" id="tf1" value="< 2h"><label for="tf1">Menos de 2h</label>
+        <input type="radio" name="q_tempo_fin" id="tf2" value="2–5h"><label for="tf2">2 a 5h</label>
+        <input type="radio" name="q_tempo_fin" id="tf3" value="5–10h"><label for="tf3">5 a 10h</label>
+        <input type="radio" name="q_tempo_fin" id="tf4" value="> 10h"><label for="tf4">Mais de 10h</label>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <div class="q-number">42</div>
+      <div class="q-text">Quanto tempo gasta com tarefas operacionais (agenda, controles, follow-up) por semana?</div>
+      <div class="radio-group">
+        <input type="radio" name="q_tempo_op" id="to1" value="< 2h"><label for="to1">Menos de 2h</label>
+        <input type="radio" name="q_tempo_op" id="to2" value="2–5h"><label for="to2">2 a 5h</label>
+        <input type="radio" name="q_tempo_op" id="to3" value="5–10h"><label for="to3">5 a 10h</label>
+        <input type="radio" name="q_tempo_op" id="to4" value="> 10h"><label for="to4">Mais de 10h</label>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <div class="q-number">43</div>
+      <div class="q-text">Esses problemas já causaram algum dos seguintes impactos? <span style="font-weight:300;font-size:12px;">(marque todos que ocorreram)</span></div>
+      <div class="check-group">
+        <input type="checkbox" id="imp1" name="q_impactos" value="Perda de dinheiro"><label for="imp1">Perda de dinheiro</label>
+        <input type="checkbox" id="imp2" name="q_impactos" value="Perda de pacientes"><label for="imp2">Perda de pacientes</label>
+        <input type="checkbox" id="imp3" name="q_impactos" value="Decisões erradas"><label for="imp3">Decisões erradas</label>
+        <input type="checkbox" id="imp4" name="q_impactos" value="Estresse / retrabalho"><label for="imp4">Estresse / retrabalho</label>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <div class="q-number">44</div>
+      <div class="q-text">Qual dessas áreas mais impacta o resultado da clínica hoje?</div>
+      <div class="radio-group">
+        <input type="radio" name="q_area_impacto" id="ai1" value="Agenda / operação"><label for="ai1">Agenda / operação</label>
+        <input type="radio" name="q_area_impacto" id="ai2" value="Financeiro"><label for="ai2">Financeiro</label>
+        <input type="radio" name="q_area_impacto" id="ai3" value="Estoque"><label for="ai3">Estoque</label>
+        <input type="radio" name="q_area_impacto" id="ai4" value="Comercial"><label for="ai4">Comercial</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ BLOCO 7 — VALIDAÇÃO DE VALOR E PERGUNTA DE OURO ══════════ -->
+  <div class="step" id="step7">
+    <div class="section-header">
+      <span class="section-badge">Bloco 07</span>
+      <h2 class="section-title">Tentativas de Solução &amp; Validação de Valor</h2>
+      <p class="section-desc">O que você já tentou, o que uma solução ideal precisaria resolver — e a pergunta que define o MVP.</p>
+    </div>
+
+    <div class="question-card">
+      <div class="q-number">46</div>
+      <div class="q-text">Você já tentou resolver algum desses problemas com ferramentas ou sistemas?</div>
+      <div class="radio-group">
+        <input type="radio" name="q_tentou" id="tt1" value="Sim"><label for="tt1">Sim</label>
+        <input type="radio" name="q_tentou" id="tt2" value="Não"><label for="tt2">Não</label>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <div class="q-number">47</div>
+      <div class="q-text">Quais ferramentas ou sistemas já utilizou?</div>
+      <textarea class="q-textarea" id="q_sistemas_usados" placeholder="Ex.: Clinicorp, iClinic, planilhas avançadas, sistema do convênio..."></textarea>
+    </div>
+
+    <div class="question-card">
+      <div class="q-number">48</div>
+      <div class="q-text">O que NÃO funcionou nessas soluções?</div>
+      <div class="q-help">Por que você parou de usar ou o sistema não resolveu o problema?</div>
+      <textarea class="q-textarea" id="q_nao_funcionou" placeholder="Ex.: Era caro demais, complicado, a equipe não aderiu, não tinha o que precisava..."></textarea>
+    </div>
+
+    <div class="subsection-label">
+      <div class="subsection-label-line"></div>
+      <span class="subsection-label-text">Validação de Valor</span>
+      <div class="subsection-label-line"></div>
+    </div>
+
+    <div class="question-card">
+      <div class="q-number">49</div>
+      <div class="q-text">Se você tivesse uma solução ideal, o que ela PRECISARIA resolver?</div>
+      <textarea class="q-textarea" id="q_indispensavel" placeholder="Descreva os problemas que a solução ideal precisaria eliminar para valer a pena..."></textarea>
+    </div>
+
+    <div class="question-card">
+      <div class="q-number">50</div>
+      <div class="q-text">O que seria indispensável para você usar o sistema no dia a dia?</div>
+      <div class="q-help">Pense em facilidade de uso, velocidade, integração com o que já usa.</div>
+      <textarea class="q-textarea" id="q_uso_diario" placeholder="Ex.: Tudo em um lugar só, funcionar no celular, não precisar de treinamento longo..."></textarea>
+    </div>
+
+    <div class="question-card">
+      <div class="q-number">51</div>
+      <div class="q-text">O que faria você trocar o sistema atual por outro?</div>
+      <textarea class="q-textarea" id="q_troca" placeholder="Ex.: Se resolvesse meu maior problema de forma simples, se fosse mais barato e integrado..."></textarea>
+    </div>
+
+    <div class="question-card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--rose-pale) 0%,#FDFAF8 100%);">
+      <div class="q-number" style="color:var(--gold);">Pergunta de Ouro</div>
+      <div class="q-text" style="font-size:17px;">Se você pudesse resolver apenas UM problema hoje na clínica, qual seria?</div>
+      <div class="q-help" style="margin-bottom:13px;">Essa é a resposta mais importante de todo o questionário.</div>
+      <textarea class="q-textarea" id="q_ouro" style="min-height:100px;" placeholder="Seja específico — esse é o coração do nosso MVP..."></textarea>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <div class="step-nav">
+    <button class="btn-nav" id="btnBack" onclick="changeStep(-1)" disabled>← Voltar</button>
+    <div class="step-dots" id="stepDots"></div>
+    <button class="btn-nav primary" id="btnNext" onclick="changeStep(1)">Próximo →</button>
+  </div>
+</div>
+
+<!-- ═══════════ THANK YOU ═══════════ -->
+<div class="thankyou" id="thankYou">
+  <div class="cover-ornament"></div>
+  <div class="thankyou-icon">✦</div>
+  <h2>Obrigada pela <em>sinceridade</em></h2>
+  <p>Suas respostas foram registradas e serão analisadas para definir as prioridades do produto. Em breve entraremos em contato com um diagnóstico personalizado.</p>
+  <div class="summary-box">
+    <h3>Resumo do seu perfil</h3>
+    <div id="summaryContent"></div>
+  </div>
+  <button class="btn-download" onclick="downloadSummary()">↓ Baixar Respostas Completas</button>
+</div>
+
+<script>
+  const TOTAL_STEPS = 7;
+  let currentStep = 1;
+
+  /* ── SCALE DEFINITIONS ── */
+  const SCALES = {
+    freq: ['Nunca','Raramente','Às vezes','Frequentemente','Sempre'],
+    int:  ['Baixa','Leve','Moderada','Alta','Crítica'],
+    imp:  ['Nenhum','Baixo','Médio','Alto','Muito alto'],
+    esf:  ['Muito baixo','Baixo','Médio','Alto','Muito alto'],
+  };
+
+  /* ── PROBLEM DEFINITIONS ── */
+  const PROBLEM_GROUPS = {
+    agenda: [
+      {
+        code:'p01', title:'Horários ociosos na agenda',
+        q: ['Com que frequência existem horários ociosos na agenda?',
+            'Intensidade do problema',
+            'Qual o impacto financeiro dos horários ociosos?',
+            'Quanto esforço é necessário hoje para tentar preencher esses horários?']
+      },
+      {
+        code:'p02', title:'Dificuldade de encaixar pacientes',
+        q: ['Com que frequência há dificuldade de encaixar um paciente em horário disponível?',
+            'Intensidade do problema',
+            'Qual o impacto financeiro de perder ou atrasar encaixes?',
+            'Quanto esforço a equipe gasta organizando e comunicando esses encaixes hoje?']
+      },
+      {
+        code:'p03', title:'Conflitos de agenda (sobreposição de horários)',
+        q: ['Com que frequência dois pacientes são marcados no mesmo horário ou com o mesmo profissional?',
+            'Intensidade do problema',
+            'Qual o impacto financeiro de conflitos (cancelamentos, perda de paciente)?',
+            'Quanto esforço é necessário para identificar e corrigir esses conflitos?']
+      },
+      {
+        code:'p04', title:'Baixa visibilidade da agenda',
+        q: ['Com que frequência você não sabe ao certo o que está cheio ou livre na agenda?',
+            'Quão crítica é essa falta de visibilidade para a operação do dia a dia?',
+            'Qual o impacto financeiro de não ter clareza sobre a ocupação da agenda?',
+            'Quanto esforço é gasto para entender a situação da agenda manualmente?']
+      },
+    ],
+    financeiro: [
+      {
+        code:'p05', title:'Falta de clareza financeira (lucro / margem)',
+        q: ['Com que frequência você não sabe o lucro real, a margem ou o custo de cada procedimento?',
+            'Intensidade do problema',
+            'Qual o impacto financeiro de tomar decisões sem saber a margem real dos procedimentos?',
+            'Quanto esforço você gasta tentando entender os números financeiros da clínica?']
+      },
+      {
+        code:'p06', title:'Falta de previsão de fluxo de caixa',
+        q: ['Com que frequência você não sabe o que vai entrar ou sair no caixa no próximo mês?',
+            'Quão crítica é essa falta de previsibilidade para gerir a clínica?',
+            'Qual o impacto financeiro de não ter previsão de caixa (atrasos, dívidas, decisões erradas)?',
+            'Quanto esforço você gasta tentando projetar o caixa manualmente?']
+      },
+      {
+        code:'p07', title:'Tomada de decisão sem dados confiáveis',
+        q: ['Com que frequência você toma decisões importantes sem dados concretos?',
+            'Intensidade do problema',
+            'Qual o impacto financeiro de decisões tomadas sem informações confiáveis?',
+            'Quanto esforço você gasta reunindo informações antes de decidir?']
+      },
+    ],
+    estoque: [
+      {
+        code:'p08', title:'Falta de insumo no momento do atendimento',
+        q: ['Com que frequência falta algum insumo no momento de realizar um atendimento?',
+            'Quão crítica é a falta de insumo para a continuidade dos atendimentos?',
+            'Qual o impacto financeiro quando falta insumo (cancelamento, atraso, recompra urgente)?',
+            'Quanto esforço é necessário para controlar o estoque e evitar faltas hoje?']
+      },
+      {
+        code:'p09', title:'Compra emergencial de insumos (mais cara)',
+        q: ['Com que frequência você precisa comprar insumos de forma emergencial e fora do planejado?',
+            'Intensidade do problema',
+            'Qual o impacto financeiro de comprar insumos a preços maiores por urgência?',
+            'Quanto esforço operacional envolve resolver uma compra emergencial?']
+      },
+      {
+        code:'p10', title:'Falta de controle de estoque',
+        q: ['Com que frequência você não tem clareza sobre o que tem em estoque, validade ou rastreabilidade?',
+            'Quão crítica é a falta de controle de estoque para a segurança dos procedimentos?',
+            'Qual o impacto financeiro de produtos vencidos ou perdas por falta de rastreabilidade?',
+            'Quanto esforço é gasto para controlar o estoque manualmente hoje?']
+      },
+    ],
+    contratos: [
+      {
+        code:'p11', title:'Falta de controle de vencimentos de contratos',
+        q: ['Com que frequência contratos vencem sem que você tenha sido avisado com antecedência?',
+            'Quão crítica é a perda de controle sobre datas de vencimento?',
+            'Qual o impacto financeiro de contratos que renovam automaticamente sem revisão prévia?',
+            'Quanto esforço é necessário para rastrear os contratos ativos hoje?']
+      },
+      {
+        code:'p12', title:'Renovação de contratos sem planejamento',
+        q: ['Com que frequência você é surpreendido por reajustes ou renovações sem tempo de negociar?',
+            'Quão crítica é essa falta de planejamento para o orçamento da clínica?',
+            'Qual o impacto financeiro de não negociar contratos com antecedência?',
+            'Quanto esforço você gasta gerenciando prazos e negociações de contratos?']
+      },
+    ],
+    recebimentos: [
+      {
+        code:'p13', title:'Perda de recebimentos',
+        q: ['Com que frequência pagamentos deixam de ser registrados ou parcelas são esquecidas?',
+            'Intensidade do problema',
+            'Qual o impacto financeiro direto de recebimentos perdidos ou não cobrados?',
+            'Quanto esforço é necessário para conciliar e conferir recebimentos manualmente?']
+      },
+      {
+        code:'p14', title:'Falha de integração entre áreas',
+        q: ['Com que frequência uma área não tem a informação que outra área já registrou?',
+            'Quão crítica é essa falta de comunicação entre as áreas para o funcionamento da clínica?',
+            'Qual o impacto financeiro de erros causados por informações que não chegam à área certa?',
+            'Quanto esforço é gasto para alinhar informações manualmente entre as áreas?']
+      },
+    ],
+    comercial: [
+      {
+        code:'p15', title:'Falta de controle de follow-up com pacientes indecisos',
+        q: ['Com que frequência pacientes indecisos ficam sem receber um contato de acompanhamento?',
+            'Quão crítica é essa falta de follow-up para a taxa de conversão da clínica?',
+            'Qual o impacto financeiro de perder pacientes que fechariam com um contato no momento certo?',
+            'Quanto esforço a equipe gasta tentando lembrar e organizar os follow-ups manualmente?']
+      },
+      {
+        code:'p16', title:'Perda de pacientes no processo comercial',
+        q: ['Com que frequência pacientes que fizeram avaliação somem sem fechar o tratamento?',
+            'Quão crítica é essa perda de pacientes para o crescimento da clínica?',
+            'Qual o impacto financeiro de cada paciente que não fecha o tratamento após a consulta?',
+            'Quanto esforço a equipe investe tentando recuperar esses pacientes perdidos?']
+      },
+    ],
+    governanca: [
+      {
+        code:'p17', title:'Decisão sem visibilidade de dados estratégicos',
+        q: ['Com que frequência você toma decisões de gestão sem acesso a dados de lucro, margem ou custos em tempo real?',
+            'Quão crítica é essa falta de visibilidade estratégica para a direção da clínica?',
+            'Qual o impacto financeiro de decisões estratégicas tomadas sem informações consolidadas?',
+            'Quanto esforço você gasta consolidando informações para ter uma visão gerencial da clínica?']
+      },
+    ],
+  };
+
+  const SCALE_TYPES = ['freq','int','imp','esf'];
+
+  /* Render a problem card */
+  function renderProblem(p, container) {
+    const card = document.createElement('div');
+    card.className = 'problem-card';
+
+    const header = document.createElement('div');
+    header.className = 'problem-header';
+    header.innerHTML = `<span class="problem-number">${p.code.toUpperCase()}</span><span class="problem-title">${p.title}</span>`;
+    card.appendChild(header);
+
+    const body = document.createElement('div');
+    body.className = 'problem-body';
+
+    SCALE_TYPES.forEach((type, idx) => {
+      const row = document.createElement('div');
+      row.className = 'criterion-row';
+
+      const q = document.createElement('div');
+      q.className = 'criterion-question';
+      q.textContent = p.q[idx];
+      row.appendChild(q);
+
+      const EXTR = {
+        freq: ['Nunca', 'Sempre'],
+        int:  ['Baixa', 'Crítica'],
+        imp:  ['Nenhum', 'Muito alto'],
+        esf:  ['Muito baixo', 'Muito alto'],
+      };
+
+      const scaleWrap = document.createElement('div');
+      scaleWrap.className = 'scale-wrap';
+
+      const exLeft = document.createElement('span');
+      exLeft.className = 'scale-extreme left';
+      exLeft.textContent = EXTR[type][0];
+
+      const track = document.createElement('div');
+      track.className = 'scale-track';
+
+      const exRight = document.createElement('span');
+      exRight.className = 'scale-extreme right';
+      exRight.textContent = EXTR[type][1];
+
+      const scLabels = SCALES[type];
+      for (let i = 1; i <= 5; i++) {
+        const inp = document.createElement('input');
+        inp.type = 'radio';
+        inp.name = `${p.code}_${type}`;
+        inp.id = `${p.code}_${type}_${i}`;
+        inp.value = String(i);
+
+        const lbl = document.createElement('label');
+        lbl.htmlFor = `${p.code}_${type}_${i}`;
+        lbl.setAttribute('data-pos', String(i));
+        lbl.setAttribute('data-tip', `${i} — ${scLabels[i-1]}`);
+        lbl.textContent = i;
+
+        track.appendChild(inp);
+        track.appendChild(lbl);
+      }
+
+      scaleWrap.appendChild(exLeft);
+      scaleWrap.appendChild(track);
+      scaleWrap.appendChild(exRight);
+      row.appendChild(scaleWrap);
+      body.appendChild(row);
+    });
+
+    card.appendChild(body);
+    container.appendChild(card);
+  }
+
+  /* Build all problem groups */
+  function buildProblems() {
+    const map = {
+      agenda:       'problems_agenda',
+      financeiro:   'problems_financeiro',
+      estoque:      'problems_estoque',
+      contratos:    'problems_contratos',
+      recebimentos: 'problems_recebimentos',
+      comercial:    'problems_comercial',
+      governanca:   'problems_governanca',
+    };
+    Object.keys(map).forEach(group => {
+      const container = document.getElementById(map[group]);
+      if (!container) return;
+      PROBLEM_GROUPS[group].forEach(p => renderProblem(p, container));
+    });
+  }
+
+  function startQuiz() {
+    document.getElementById('coverPage').style.display = 'none';
+    document.getElementById('quizShell').classList.add('active');
+    buildProblems();
+    renderDots(); updateProgress();
+  }
+
+  function renderDots() {
+    const dots = document.getElementById('stepDots');
+    dots.innerHTML = '';
+    for (let i = 1; i <= TOTAL_STEPS; i++) {
+      const d = document.createElement('div');
+      d.className = 'step-dot' + (i === currentStep ? ' active' : (i < currentStep ? ' done' : ''));
+      dots.appendChild(d);
+    }
+  }
+
+  function updateProgress() {
+    const pct = ((currentStep - 1) / TOTAL_STEPS) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = currentStep + ' / ' + TOTAL_STEPS;
+    document.getElementById('btnBack').disabled = currentStep === 1;
+    document.getElementById('btnNext').textContent = currentStep === TOTAL_STEPS ? 'Concluir ✓' : 'Próximo →';
+  }
+
+  function changeStep(dir) {
+    if (dir === 1 && currentStep === TOTAL_STEPS) { finishQuiz(); return; }
+    document.getElementById('step' + currentStep).classList.remove('active');
+    currentStep = Math.max(1, Math.min(TOTAL_STEPS, currentStep + dir));
+    document.getElementById('step' + currentStep).classList.add('active');
+    renderDots(); updateProgress();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function getRadio(name) {
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    return el ? el.value : '—';
+  }
+  function getCheckboxes(name) {
+    const c = [...document.querySelectorAll(`input[name="${name}"]:checked`)].map(e => e.value);
+    return c.length ? c.join(', ') : '—';
+  }
+  function getText(id) {
+    const el = document.getElementById(id);
+    return (el && el.value.trim()) ? el.value.trim() : '—';
+  }
+
+  /* Flatten all problems into a list */
+  const ALL_PROBLEMS = Object.values(PROBLEM_GROUPS).flat();
+
+  function collectAnswers() {
+    const a = {};
+    a.nome = getText('q_nome');
+    a.setor = getRadio('q_setor');
+    a.tempo = getRadio('q_tempo');
+    a.financeiro = getRadio('q_financeiro');
+    a.ferramentas = getCheckboxes('q_ferramentas');
+
+    ALL_PROBLEMS.forEach(p => {
+      SCALE_TYPES.forEach(t => {
+        a[`${p.code}_${t}`] = getRadio(`${p.code}_${t}`);
+      });
+    });
+
+    a.ctx_agenda_visual = getText('ctx_agenda_visual');
+    a.ctx_perdeu = getRadio('ctx_perdeu');
+    a.ctx_espera = getRadio('ctx_espera');
+    a.ctx_fin_controle = getText('ctx_fin_controle');
+    a.ctx_fin_confia = getRadio('ctx_fin_confia');
+    a.ctx_fin_caixa = getRadio('ctx_fin_caixa');
+    a.ctx_estoque = getRadio('ctx_estoque');
+    a.ctx_alerta = getRadio('ctx_alerta');
+    a.ctx_prazo = getRadio('ctx_prazo');
+    a.ctx_prazo_impacto = getText('ctx_prazo_impacto');
+    a.ctx_receb = getRadio('ctx_receb');
+    a.ctx_receb_motivo = getText('ctx_receb_motivo');
+    a.ctx_followup = getText('ctx_followup');
+    a.ctx_visao = getRadio('ctx_visao');
+
+    a.decisoes = getCheckboxes('q_decisoes');
+    a.decisao_seg = getRadio('q_decisao_seg');
+    a.feeling = getText('q_feeling');
+    a.info_desejada = getText('q_info_desejada');
+    a.tempo_fin = getRadio('q_tempo_fin');
+    a.tempo_op = getRadio('q_tempo_op');
+    a.impactos = getCheckboxes('q_impactos');
+    a.area_impacto = getRadio('q_area_impacto');
+
+    a.tentou = getRadio('q_tentou');
+    a.sistemas_usados = getText('q_sistemas_usados');
+    a.nao_funcionou = getText('q_nao_funcionou');
+    a.indispensavel = getText('q_indispensavel');
+    a.uso_diario = getText('q_uso_diario');
+    a.troca = getText('q_troca');
+    a.ouro = getText('q_ouro');
+
+    return a;
+  }
+
+  function getScore(a, p) {
+    return SCALE_TYPES.map(t => parseInt(a[`${p.code}_${t}`]) || 0).reduce((s,n) => s+n, 0);
+  }
+
+  // ── GOOGLE SHEETS ENDPOINT ──────────────────────────────────────────────
+  // Cole aqui a URL do seu Web App gerado no Google Apps Script
+  const SHEETS_URL = 'COLE_AQUI_A_URL_DO_SEU_WEB_APP';
+  // ─────────────────────────────────────────────────────────────────────────
+
+  async function sendToSheets(payload) {
+    try {
+      await fetch(SHEETS_URL, {
+        method: 'POST',
+        mode: 'no-cors',           // Apps Script exige no-cors
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+    } catch (err) {
+      console.warn('Sheets: falha no envio', err);
+    }
+  }
+
+  function buildPayload(a) {
+    const sorted = ALL_PROBLEMS
+      .map(p => ({ code: p.code, label: p.title, score: getScore(a, p) }))
+      .sort((x, y) => y.score - x.score);
+
+    const row = {
+      timestamp:    new Date().toISOString(),
+      nome:         a.nome,
+      setor:        a.setor,
+      tempo:        a.tempo,
+      financeiro:   a.financeiro,
+      ferramentas:  a.ferramentas,
+    };
+
+    // Scores de todos os problemas (F / I / $ / E e total)
+    ALL_PROBLEMS.forEach(p => {
+      ['freq','int','imp','esf'].forEach(t => {
+        row[`${p.code}_${t}`] = a[`${p.code}_${t}`] || '';
+      });
+      row[`${p.code}_total`] = getScore(a, p);
+    });
+
+    // Top 5 dores
+    sorted.slice(0, 5).forEach((p, i) => {
+      row[`top${i + 1}_dor`]   = p.label;
+      row[`top${i + 1}_score`] = p.score;
+    });
+
+    // Bloco 6
+    row.decisoes      = a.decisoes;
+    row.decisao_seg   = a.decisao_seg;
+    row.feeling       = a.feeling;
+    row.info_desejada = a.info_desejada;
+    row.tempo_fin     = a.tempo_fin;
+    row.tempo_op      = a.tempo_op;
+    row.impactos      = a.impactos;
+    row.area_impacto  = a.area_impacto;
+
+    // Bloco 7
+    row.tentou           = a.tentou;
+    row.sistemas_usados  = a.sistemas_usados;
+    row.nao_funcionou    = a.nao_funcionou;
+    row.indispensavel    = a.indispensavel;
+    row.uso_diario       = a.uso_diario;
+    row.troca            = a.troca;
+    row.ouro             = a.ouro;
+
+    return row;
+  }
+
+  async function finishQuiz() {
+    const a = collectAnswers();
+    window._answers = a;
+
+    // Mostra tela de conclusão imediatamente
+    document.getElementById('quizShell').classList.remove('active');
+    document.getElementById('thankYou').classList.add('active');
+
+    // Monta summary
+    const sorted = ALL_PROBLEMS.map(p => ({ label: p.title, score: getScore(a, p) }))
+                                .sort((x, y) => y.score - x.score);
+
+    const base = [
+      ['Respondente', a.nome],
+      ['Setor', a.setor],
+      ['Tempo na clínica', a.tempo],
+      ['Decisões financeiras', a.financeiro],
+      ['Área de maior impacto', a.area_impacto],
+      ['Segurança nas decisões', a.decisao_seg],
+    ];
+
+    document.getElementById('summaryContent').innerHTML =
+      base.map(([l, v]) => `<div class="summary-item"><span class="summary-item-label">${l}</span><span class="summary-item-value">${v}</span></div>`).join('') +
+      `<div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(201,164,154,0.2);">
+        <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(253,250,248,0.4);margin-bottom:10px;">Top 5 dores por pontuação</div>
+        ${sorted.slice(0,5).map((p,i) => `<div class="summary-item"><span class="summary-item-label">${i+1}. ${p.label}</span><span class="summary-item-value">${p.score} pts</span></div>`).join('')}
+      </div>` +
+      (a.ouro !== '—' ? `<div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(201,164,154,0.2);"><div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(253,250,248,0.4);margin-bottom:8px;">Pergunta de Ouro</div><div style="font-size:12px;color:var(--rose-light);font-style:italic;line-height:1.6;">"${a.ouro}"</div></div>` : '');
+
+    // Envia para o Google Sheets em background
+    sendToSheets(buildPayload(a));
+  }
+
+  function downloadSummary() {
+    const a = window._answers || {};
+    const sep = '─'.repeat(60);
+    let txt = `DISCOVERY — CLÍNICA ESTÉTICA\nData: ${new Date().toLocaleDateString('pt-BR')}\n${sep}\n\n`;
+
+    txt += `BLOCO 1 — PERFIL\nNome / Cargo: ${a.nome}\nSetor: ${a.setor}\nTempo: ${a.tempo}\nDecisões financeiras: ${a.financeiro}\nFerramentas: ${a.ferramentas}\n\n`;
+
+    txt += `BLOCO 2-5 — PROBLEMAS\n(F=Frequência  I=Intensidade  $=Impacto financeiro  E=Esforço — escala 1 a 5)\n\n`;
+    ALL_PROBLEMS.forEach(p => {
+      const score = getScore(a, p);
+      txt += `${p.title}\n  F=${a[p.code+'_freq']}  I=${a[p.code+'_int']}  $=${a[p.code+'_imp']}  E=${a[p.code+'_esf']}  [total: ${score}]\n`;
+    });
+
+    txt += `\nCONTEXTOS\nAgenda — Visualização: ${a.ctx_agenda_visual}\nAgenda — Perdeu pacientes: ${a.ctx_perdeu}\nAgenda — Lista de espera: ${a.ctx_espera}\n`;
+    txt += `Financeiro — Controle: ${a.ctx_fin_controle}\nFinanceiro — Confia nos números: ${a.ctx_fin_confia}\nFinanceiro — Prevê caixa: ${a.ctx_fin_caixa}\n`;
+    txt += `Estoque — Tipo de controle: ${a.ctx_estoque}\nEstoque — Alerta de reposição: ${a.ctx_alerta}\n`;
+    txt += `Contratos — Perdeu prazo: ${a.ctx_prazo}\nContratos — Impacto: ${a.ctx_prazo_impacto}\n`;
+    txt += `Recebimentos — Perdeu: ${a.ctx_receb}\nRecebimentos — Motivo: ${a.ctx_receb_motivo}\n`;
+    txt += `Comercial — Follow-up atual: ${a.ctx_followup}\nGovernança — Visão estratégica: ${a.ctx_visao}\n`;
+
+    txt += `\nBLOCO 6 — DECISÃO E IMPACTO\nDecisões frequentes: ${a.decisoes}\nSegurança: ${a.decisao_seg}\nNo feeling: ${a.feeling}\nInformações desejadas: ${a.info_desejada}\n`;
+    txt += `Tempo/semana gestão financeira: ${a.tempo_fin}\nTempo/semana operacional: ${a.tempo_op}\nImpactos causados: ${a.impactos}\nÁrea de maior impacto: ${a.area_impacto}\n`;
+
+    txt += `\nBLOCO 7 — SOLUÇÕES E VALOR\nJá tentou: ${a.tentou}\nSistemas usados: ${a.sistemas_usados}\nO que não funcionou: ${a.nao_funcionou}\nPrecisa resolver: ${a.indispensavel}\nUso diário: ${a.uso_diario}\nO que faria trocar: ${a.troca}\n`;
+
+    txt += `\n${'═'.repeat(60)}\nPERGUNTA DE OURO:\n"${a.ouro}"\n\n`;
+
+    txt += `RANKING DE DORES (pontuação total):\n`;
+    ALL_PROBLEMS.map(p => ({ label: p.title, score: getScore(a, p) }))
+      .sort((x,y) => y.score - x.score)
+      .forEach((p, i) => { txt += `${i+1}. ${p.label} — ${p.score} pts\n`; });
+
+    const blob = new Blob([txt], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `discovery_clinica_${new Date().toISOString().slice(0,10)}.txt`;
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => { renderDots(); });
+</script>
+</body>
+</html>
