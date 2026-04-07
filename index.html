@@ -1260,16 +1260,23 @@
 
   // ── GOOGLE SHEETS ENDPOINT ──────────────────────────────────────────────
   // Cole aqui a URL do seu Web App gerado no Google Apps Script
-  const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwFZiK-jC_jxc3rDb5v_MZfpqfsmRm-YfNeipym8ql2cxAUaR_aYJPWe3Vs4BNvvP8n/exec';
+  const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwCxKzPp3f9jUsbmPtraz8MvbbgKN3eP0_G4OIyou8G/dev';
   // ─────────────────────────────────────────────────────────────────────────
 
   async function sendToSheets(payload) {
+    if (!SHEETS_URL || SHEETS_URL.includes('COLE_AQUI')) {
+      console.warn('Sheets: URL não configurada.');
+      return;
+    }
     try {
+      // Apps Script com no-cors exige que o body seja uma string simples em 'postData.contents'.
+      // Enviamos o JSON como valor de um campo de formulário para contornar a restrição de CORS.
+      const form = new FormData();
+      form.append('payload', JSON.stringify(payload));
       await fetch(SHEETS_URL, {
         method: 'POST',
-        mode: 'no-cors',           // Apps Script exige no-cors
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        mode: 'no-cors',
+        body: form,
       });
     } catch (err) {
       console.warn('Sheets: falha no envio', err);
