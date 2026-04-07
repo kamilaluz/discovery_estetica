@@ -398,6 +398,13 @@
     to   { opacity: 1; transform: translateY(0); }
   }
 
+  /* Required field asterisk */
+  .q-required::after {
+    content: ' *';
+    color: var(--rose);
+    font-weight: 500;
+  }
+
   @media (max-width: 600px) {
     .step { padding: 0 16px 120px; }
     .section-header { padding: 60px 16px 0; }
@@ -442,13 +449,13 @@
 
     <div class="question-card">
       <div class="q-number">1.1</div>
-      <div class="q-text">Qual é o seu nome e cargo?</div>
+      <div class="q-text q-required">Qual é o seu nome e cargo?</div>
       <input class="q-input" type="text" id="q_nome" placeholder="Ex.: Ana Beatriz — Recepcionista">
     </div>
 
     <div class="question-card">
       <div class="q-number">1.2</div>
-      <div class="q-text">Qual é o seu setor principal?</div>
+      <div class="q-text q-required">Qual é o seu setor principal?</div>
       <div class="radio-group">
         <input type="radio" name="q_setor" id="s1" value="Recepção / Atendimento"><label for="s1">Recepção / Atendimento ao Paciente</label>
         <input type="radio" name="q_setor" id="s2" value="Comercial / Vendas"><label for="s2">Comercial / Vendas &amp; Fechamento de Pacotes</label>
@@ -463,7 +470,7 @@
 
     <div class="question-card">
       <div class="q-number">1.3</div>
-      <div class="q-text">Há quanto tempo você trabalha na clínica?</div>
+      <div class="q-text q-required">Há quanto tempo você trabalha na clínica?</div>
       <div class="radio-group">
         <input type="radio" name="q_tempo" id="t1" value="< 6 meses"><label for="t1">Menos de 6 meses</label>
         <input type="radio" name="q_tempo" id="t2" value="6–12 meses"><label for="t2">6 a 12 meses</label>
@@ -474,7 +481,7 @@
 
     <div class="question-card">
       <div class="q-number">1.4</div>
-      <div class="q-text">Você participa de decisões financeiras da clínica?</div>
+      <div class="q-text q-required">Você participa de decisões financeiras da clínica?</div>
       <div class="radio-group">
         <input type="radio" name="q_financeiro" id="fin1" value="Sim"><label for="fin1">Sim</label>
         <input type="radio" name="q_financeiro" id="fin2" value="Às vezes"><label for="fin2">Às vezes</label>
@@ -484,14 +491,17 @@
 
     <div class="question-card">
       <div class="q-number">1.5</div>
-      <div class="q-text">Quais ferramentas você usa hoje? <span style="font-weight:300;font-size:12px;">(pode marcar mais de uma)</span></div>
+      <div class="q-text q-required">Quais ferramentas você usa hoje? <span style="font-weight:300;font-size:12px;">(pode marcar mais de uma)</span></div>
       <div class="check-group">
         <input type="checkbox" id="f1" name="q_ferramentas" value="Agenda"><label for="f1">Agenda</label>
         <input type="checkbox" id="f2" name="q_ferramentas" value="Prontuário eletrônico"><label for="f2">Prontuário eletrônico</label>
         <input type="checkbox" id="f3" name="q_ferramentas" value="Sistema financeiro"><label for="f3">Sistema financeiro</label>
         <input type="checkbox" id="f4" name="q_ferramentas" value="Planilhas"><label for="f4">Planilhas</label>
         <input type="checkbox" id="f5" name="q_ferramentas" value="WhatsApp"><label for="f5">WhatsApp</label>
-        <input type="checkbox" id="f6" name="q_ferramentas" value="Outro"><label for="f6">Outro</label>
+        <input type="checkbox" id="f6" name="q_ferramentas" value="Outro" onchange="toggleOther('f6','q_ferramentas_outro')"><label for="f6">Outro</label>
+      </div>
+      <div id="q_ferramentas_outro_wrap" style="display:none;margin-top:10px;">
+        <input class="q-input" type="text" id="q_ferramentas_outro" placeholder="Qual sistema você usa?">
       </div>
     </div>
   </div>
@@ -579,20 +589,23 @@
 
     <div class="question-card">
       <div class="q-number">37</div>
-      <div class="q-text">Quais decisões você precisa tomar com frequência? <span style="font-weight:300;font-size:12px;">(marque todas)</span></div>
+      <div class="q-text q-required">Quais decisões você precisa tomar com frequência? <span style="font-weight:300;font-size:12px;">(marque todas)</span></div>
       <div class="check-group">
         <input type="checkbox" id="dec1" name="q_decisoes" value="Precificação"><label for="dec1">Precificação de procedimentos</label>
         <input type="checkbox" id="dec2" name="q_decisoes" value="Promoções"><label for="dec2">Promoções / campanhas</label>
         <input type="checkbox" id="dec3" name="q_decisoes" value="Compra de insumos"><label for="dec3">Compra de insumos</label>
         <input type="checkbox" id="dec4" name="q_decisoes" value="Contratação"><label for="dec4">Contratação de equipe</label>
         <input type="checkbox" id="dec5" name="q_decisoes" value="Tecnologia"><label for="dec5">Investimento em tecnologia</label>
-        <input type="checkbox" id="dec6" name="q_decisoes" value="Outros"><label for="dec6">Outros</label>
+        <input type="checkbox" id="dec6" name="q_decisoes" value="Outros" onchange="toggleOther('dec6','q_decisoes_outro')"><label for="dec6">Outros</label>
+      </div>
+      <div id="q_decisoes_outro_wrap" style="display:none;margin-top:10px;">
+        <input class="q-input" type="text" id="q_decisoes_outro" placeholder="Qual outra decisão você precisa tomar?">
       </div>
     </div>
 
     <div class="question-card">
       <div class="q-number">38</div>
-      <div class="q-text">Você consegue tomar essas decisões com segurança hoje?</div>
+      <div class="q-text q-required">Você consegue tomar essas decisões com segurança hoje?</div>
       <div class="radio-group">
         <input type="radio" name="q_decisao_seg" id="ds1" value="Sim"><label for="ds1">Sim, tenho dados confiáveis</label>
         <input type="radio" name="q_decisao_seg" id="ds2" value="Parcialmente"><label for="ds2">Parcialmente</label>
@@ -602,13 +615,13 @@
 
     <div class="question-card">
       <div class="q-number">39</div>
-      <div class="q-text">Quais decisões você sente que são tomadas mais no "feeling" do que com base em dados?</div>
+      <div class="q-text q-required">Quais decisões você sente que são tomadas mais no "feeling" do que com base em dados?</div>
       <textarea class="q-textarea" id="q_feeling" placeholder="Ex.: Definição de preço, quando contratar, se vale a pena uma nova tecnologia..."></textarea>
     </div>
 
     <div class="question-card">
       <div class="q-number">40</div>
-      <div class="q-text">Que informações você gostaria de ter para tomar melhores decisões?</div>
+      <div class="q-text q-required">Que informações você gostaria de ter para tomar melhores decisões?</div>
       <div class="q-help">Descreva livremente — essa resposta é ouro para o produto.</div>
       <textarea class="q-textarea" id="q_info_desejada" placeholder="Ex.: Qual procedimento dá mais lucro, quantos pacientes voltam, custo real por atendimento..."></textarea>
     </div>
@@ -621,7 +634,7 @@
 
     <div class="question-card">
       <div class="q-number">41</div>
-      <div class="q-text">Quanto tempo você gasta por semana com gestão financeira?</div>
+      <div class="q-text q-required">Quanto tempo você gasta por semana com gestão financeira?</div>
       <div class="radio-group">
         <input type="radio" name="q_tempo_fin" id="tf1" value="< 2h"><label for="tf1">Menos de 2h</label>
         <input type="radio" name="q_tempo_fin" id="tf2" value="2–5h"><label for="tf2">2 a 5h</label>
@@ -632,7 +645,7 @@
 
     <div class="question-card">
       <div class="q-number">42</div>
-      <div class="q-text">Quanto tempo gasta com tarefas operacionais (agenda, controles, follow-up) por semana?</div>
+      <div class="q-text q-required">Quanto tempo gasta com tarefas operacionais (agenda, controles, follow-up) por semana?</div>
       <div class="radio-group">
         <input type="radio" name="q_tempo_op" id="to1" value="< 2h"><label for="to1">Menos de 2h</label>
         <input type="radio" name="q_tempo_op" id="to2" value="2–5h"><label for="to2">2 a 5h</label>
@@ -643,7 +656,7 @@
 
     <div class="question-card">
       <div class="q-number">43</div>
-      <div class="q-text">Esses problemas já causaram algum dos seguintes impactos? <span style="font-weight:300;font-size:12px;">(marque todos que ocorreram)</span></div>
+      <div class="q-text q-required">Esses problemas já causaram algum dos seguintes impactos? <span style="font-weight:300;font-size:12px;">(marque todos que ocorreram)</span></div>
       <div class="check-group">
         <input type="checkbox" id="imp1" name="q_impactos" value="Perda de dinheiro"><label for="imp1">Perda de dinheiro</label>
         <input type="checkbox" id="imp2" name="q_impactos" value="Perda de pacientes"><label for="imp2">Perda de pacientes</label>
@@ -654,7 +667,7 @@
 
     <div class="question-card">
       <div class="q-number">44</div>
-      <div class="q-text">Qual dessas áreas mais impacta o resultado da clínica hoje?</div>
+      <div class="q-text q-required">Qual dessas áreas mais impacta o resultado da clínica hoje?</div>
       <div class="radio-group">
         <input type="radio" name="q_area_impacto" id="ai1" value="Agenda / operação"><label for="ai1">Agenda / operação</label>
         <input type="radio" name="q_area_impacto" id="ai2" value="Financeiro"><label for="ai2">Financeiro</label>
@@ -674,7 +687,7 @@
 
     <div class="question-card">
       <div class="q-number">46</div>
-      <div class="q-text">Você já tentou resolver algum desses problemas com ferramentas ou sistemas?</div>
+      <div class="q-text q-required">Você já tentou resolver algum desses problemas com ferramentas ou sistemas?</div>
       <div class="radio-group">
         <input type="radio" name="q_tentou" id="tt1" value="Sim"><label for="tt1">Sim</label>
         <input type="radio" name="q_tentou" id="tt2" value="Não"><label for="tt2">Não</label>
@@ -683,15 +696,33 @@
 
     <div class="question-card">
       <div class="q-number">47</div>
-      <div class="q-text">Quais ferramentas ou sistemas já utilizou?</div>
-      <textarea class="q-textarea" id="q_sistemas_usados" placeholder="Ex.: Clinicorp, iClinic, planilhas avançadas, sistema do convênio..."></textarea>
+      <div class="q-text q-required">Quais ferramentas ou sistemas já utilizou? <span style="font-weight:300;font-size:12px;">(pode marcar mais de um)</span></div>
+      <div class="check-group" style="margin-top:12px;">
+        <input type="checkbox" id="sis1" name="q_sistemas_usados" value="Clinicorp"><label for="sis1">Clinicorp</label>
+        <input type="checkbox" id="sis2" name="q_sistemas_usados" value="iClinic"><label for="sis2">iClinic</label>
+        <input type="checkbox" id="sis3" name="q_sistemas_usados" value="Planilhas avançadas"><label for="sis3">Planilhas avançadas</label>
+        <input type="checkbox" id="sis4" name="q_sistemas_usados" value="Sistemas de convênio"><label for="sis4">Sistemas de convênio</label>
+        <input type="checkbox" id="sis5" name="q_sistemas_usados" value="Outros" onchange="toggleOther('sis5','q_sistemas_outro')"><label for="sis5">Outros</label>
+      </div>
+      <div id="q_sistemas_outro_wrap" style="display:none;margin-top:10px;">
+        <input class="q-input" type="text" id="q_sistemas_outro" placeholder="Qual outro sistema você utilizou?">
+      </div>
     </div>
 
     <div class="question-card">
       <div class="q-number">48</div>
-      <div class="q-text">O que NÃO funcionou nessas soluções?</div>
+      <div class="q-text q-required">O que NÃO funcionou nessas soluções? <span style="font-weight:300;font-size:12px;">(pode marcar mais de um)</span></div>
       <div class="q-help">Por que você parou de usar ou o sistema não resolveu o problema?</div>
-      <textarea class="q-textarea" id="q_nao_funcionou" placeholder="Ex.: Era caro demais, complicado, a equipe não aderiu, não tinha o que precisava..."></textarea>
+      <div class="check-group">
+        <input type="checkbox" id="nf1" name="q_nao_funcionou" value="Era caro demais"><label for="nf1">Era caro demais</label>
+        <input type="checkbox" id="nf2" name="q_nao_funcionou" value="Era muito difícil de usar"><label for="nf2">Era muito difícil de usar</label>
+        <input type="checkbox" id="nf3" name="q_nao_funcionou" value="A equipe não aderiu"><label for="nf3">A equipe não aderiu</label>
+        <input type="checkbox" id="nf4" name="q_nao_funcionou" value="Não tinha tudo o que precisava"><label for="nf4">Não tinha tudo o que precisava</label>
+        <input type="checkbox" id="nf5" name="q_nao_funcionou" value="Outros" onchange="toggleOther('nf5','q_nao_funcionou_outro')"><label for="nf5">Outros</label>
+      </div>
+      <div id="q_nao_funcionou_outro_wrap" style="display:none;margin-top:10px;">
+        <input class="q-input" type="text" id="q_nao_funcionou_outro" placeholder="O que mais não funcionou?">
+      </div>
     </div>
 
     <div class="subsection-label">
@@ -702,20 +733,25 @@
 
     <div class="question-card">
       <div class="q-number">49</div>
-      <div class="q-text">Se você tivesse uma solução ideal, o que ela PRECISARIA resolver?</div>
+      <div class="q-text q-required">Se você tivesse uma solução ideal, o que ela PRECISARIA resolver?</div>
       <textarea class="q-textarea" id="q_indispensavel" placeholder="Descreva os problemas que a solução ideal precisaria eliminar para valer a pena..."></textarea>
     </div>
 
     <div class="question-card">
       <div class="q-number">50</div>
-      <div class="q-text">O que seria indispensável para você usar o sistema no dia a dia?</div>
-      <div class="q-help">Pense em facilidade de uso, velocidade, integração com o que já usa.</div>
-      <textarea class="q-textarea" id="q_uso_diario" placeholder="Ex.: Tudo em um lugar só, funcionar no celular, não precisar de treinamento longo..."></textarea>
+      <div class="q-text q-required">O que seria indispensável para você usar o sistema no dia a dia? <span style="font-weight:300;font-size:12px;">(pode marcar mais de um)</span></div>
+      <div class="check-group" style="margin-top:12px;">
+        <input type="checkbox" id="ud1" name="q_uso_diario" value="Ter todas as funcionalidades em um só lugar"><label for="ud1">Ter todas as funcionalidades em um só lugar</label>
+        <input type="checkbox" id="ud2" name="q_uso_diario" value="Funcionar em dispositivos móveis"><label for="ud2">Funcionar em dispositivos móveis</label>
+        <input type="checkbox" id="ud3" name="q_uso_diario" value="Não precisar de treinamento longo"><label for="ud3">Não precisar de treinamento longo</label>
+        <input type="checkbox" id="ud4" name="q_uso_diario" value="Ser intuitivo e fácil de usar"><label for="ud4">Ser intuitivo e fácil de usar</label>
+        <input type="checkbox" id="ud5" name="q_uso_diario" value="Ser barato"><label for="ud5">Ser barato</label>
+      </div>
     </div>
 
     <div class="question-card">
       <div class="q-number">51</div>
-      <div class="q-text">O que faria você trocar o sistema atual por outro?</div>
+      <div class="q-text q-required">O que faria você trocar o sistema atual por outro?</div>
       <textarea class="q-textarea" id="q_troca" placeholder="Ex.: Se resolvesse meu maior problema de forma simples, se fosse mais barato e integrado..."></textarea>
     </div>
 
@@ -740,12 +776,8 @@
   <div class="cover-ornament"></div>
   <div class="thankyou-icon">✦</div>
   <h2>Obrigada pela <em>sinceridade</em></h2>
-  <p>Suas respostas foram registradas e serão analisadas para definir as prioridades do produto. Em breve entraremos em contato com um diagnóstico personalizado.</p>
-  <div class="summary-box">
-    <h3>Resumo do seu perfil</h3>
-    <div id="summaryContent"></div>
-  </div>
-  <button class="btn-download" onclick="downloadSummary()">↓ Baixar Respostas Completas</button>
+  <p>Suas respostas foram registradas com sucesso e serão analisadas pela nossa equipe. Em breve entraremos em contato com um diagnóstico personalizado.</p>
+  <div id="sendStatus" style="font-size:13px;color:rgba(253,250,248,0.5);margin-top:-20px;margin-bottom:20px;"></div>
 </div>
 
 <script>
@@ -1014,8 +1046,131 @@
     document.getElementById('btnNext').textContent = currentStep === TOTAL_STEPS ? 'Concluir ✓' : 'Próximo →';
   }
 
+  /* ── Toggle "Outro" expand field ── */
+  function toggleOther(checkboxId, inputId) {
+    const cb   = document.getElementById(checkboxId);
+    const wrap = document.getElementById(inputId + '_wrap');
+    const inp  = document.getElementById(inputId);
+    if (!wrap) return;
+    wrap.style.display = cb.checked ? 'block' : 'none';
+    if (!cb.checked && inp) inp.value = '';
+  }
+
+  /* ── Validation ──
+     Rules:
+     • Every q-input (text) in a question-card must be filled.
+     • Every textarea in a question-card must be filled.
+     • Every radio group must have one option selected.
+     • Every checkbox group (inside a question-card) must have at least one option.
+     • "Outro" free-text fields are ONLY required when their paired checkbox is checked.
+  ── */
+  function validateStep(step) {
+    const el = document.getElementById('step' + step);
+
+    // IDs of free-text fields that are ONLY required when their checkbox is checked.
+    // These are excluded from the general textarea/input sweep.
+    const conditionalInputIds = new Set([
+      'q_ferramentas_outro',
+      'q_decisoes_outro',
+      'q_sistemas_outro',
+      'q_nao_funcionou_outro',
+    ]);
+
+    // Map each conditional input to its controlling checkbox id
+    const otherPairs = [
+      { cbId: 'f6',   inputId: 'q_ferramentas_outro' },
+      { cbId: 'dec6', inputId: 'q_decisoes_outro' },
+      { cbId: 'sis5', inputId: 'q_sistemas_outro' },
+      { cbId: 'nf5',  inputId: 'q_nao_funcionou_outro' },
+    ];
+
+    // 1. Text inputs — skip conditional ones
+    for (const inp of el.querySelectorAll('input.q-input')) {
+      if (conditionalInputIds.has(inp.id)) continue;
+      if (!inp.value.trim()) {
+        const card = inp.closest('.question-card');
+        const lbl  = card && (card.querySelector('.q-text') || card.querySelector('.q-number'));
+        return 'Preencha: ' + (lbl ? lbl.textContent.trim().slice(0, 70) : 'campo obrigatório');
+      }
+    }
+
+    // 2. Textareas — skip conditional ones
+    for (const ta of el.querySelectorAll('textarea.q-textarea')) {
+      if (conditionalInputIds.has(ta.id)) continue;
+      if (!ta.value.trim()) {
+        const card = ta.closest('.question-card');
+        const lbl  = card && (card.querySelector('.q-text') || card.querySelector('.q-number'));
+        return 'Preencha: ' + (lbl ? lbl.textContent.trim().slice(0, 70) : 'campo obrigatório');
+      }
+    }
+
+    // 3. Radio groups — every name must have a checked option
+    const radioNames = new Set(
+      [...el.querySelectorAll('input[type="radio"]')].map(r => r.name)
+    );
+    for (const name of radioNames) {
+      if (!el.querySelector(`input[name="${name}"]:checked`)) {
+        const firstR = el.querySelector(`input[name="${name}"]`);
+        const card   = firstR && firstR.closest('.question-card');
+        const lbl    = card && (card.querySelector('.q-text') || card.querySelector('.q-number'));
+        return 'Selecione uma opção em: ' + (lbl ? lbl.textContent.trim().slice(0, 60) : name);
+      }
+    }
+
+    // 4. Checkbox groups inside question-cards — at least one checked
+    const cbGroups = new Set(
+      [...el.querySelectorAll('.question-card .check-group input[type="checkbox"]')].map(c => c.name)
+    );
+    for (const name of cbGroups) {
+      if (!el.querySelector(`input[name="${name}"]:checked`)) {
+        const firstC = el.querySelector(`input[name="${name}"]`);
+        const card   = firstC && firstC.closest('.question-card');
+        const lbl    = card && (card.querySelector('.q-text') || card.querySelector('.q-number'));
+        return 'Selecione pelo menos uma opção em: ' + (lbl ? lbl.textContent.trim().slice(0, 60) : name);
+      }
+    }
+
+    // 5. "Outro" fields — only required when their checkbox IS checked
+    for (const { cbId, inputId } of otherPairs) {
+      const cb  = el.querySelector('#' + cbId);
+      const inp = el.querySelector('#' + inputId);
+      if (cb && cb.checked && inp && !inp.value.trim()) {
+        return 'Especifique o campo "Outro" antes de continuar';
+      }
+    }
+
+    return null; // all valid
+  }
+
+  /* ── Show inline error ── */
+  function showError(msg) {
+    let err = document.getElementById('stepError');
+    if (!err) {
+      err = document.createElement('div');
+      err.id = 'stepError';
+      err.style.cssText = `
+        position:fixed; bottom:74px; left:50%; transform:translateX(-50%);
+        background:#2C2320; color:#FDFAF8;
+        font-family:'Jost',sans-serif; font-size:13px; font-weight:400;
+        padding:10px 24px; z-index:200;
+        border-left:3px solid #C9A49A;
+        box-shadow:0 4px 20px rgba(0,0,0,0.2);
+        max-width:90vw; text-align:center;
+      `;
+      document.body.appendChild(err);
+    }
+    err.textContent = msg;
+    err.style.opacity = '1';
+    clearTimeout(err._t);
+    err._t = setTimeout(() => { err.style.opacity = '0'; }, 3000);
+  }
+
   function changeStep(dir) {
-    if (dir === 1 && currentStep === TOTAL_STEPS) { finishQuiz(); return; }
+    if (dir === 1) {
+      if (currentStep === TOTAL_STEPS) { finishQuiz(); return; }
+      const err = validateStep(currentStep);
+      if (err) { showError(err); return; }
+    }
     document.getElementById('step' + currentStep).classList.remove('active');
     currentStep = Math.max(1, Math.min(TOTAL_STEPS, currentStep + dir));
     document.getElementById('step' + currentStep).classList.add('active');
@@ -1035,6 +1190,17 @@
     const el = document.getElementById(id);
     return (el && el.value.trim()) ? el.value.trim() : '—';
   }
+  function getCheckboxesWithOther(name, otherId) {
+    const vals = [...document.querySelectorAll(`input[name="${name}"]:checked`)].map(e => e.value);
+    const otherEl = document.getElementById(otherId);
+    if (otherEl && otherEl.value.trim()) {
+      // Replace 'Outros' with the actual text
+      const idx = vals.indexOf('Outros');
+      if (idx !== -1) vals[idx] = 'Outros: ' + otherEl.value.trim();
+      else vals.push('Outros: ' + otherEl.value.trim());
+    }
+    return vals.length ? vals.join(', ') : '—';
+  }
 
   /* Flatten all problems into a list */
   const ALL_PROBLEMS = Object.values(PROBLEM_GROUPS).flat();
@@ -1045,7 +1211,7 @@
     a.setor = getRadio('q_setor');
     a.tempo = getRadio('q_tempo');
     a.financeiro = getRadio('q_financeiro');
-    a.ferramentas = getCheckboxes('q_ferramentas');
+    a.ferramentas = getCheckboxesWithOther('q_ferramentas', 'q_ferramentas_outro');
 
     ALL_PROBLEMS.forEach(p => {
       SCALE_TYPES.forEach(t => {
@@ -1068,7 +1234,7 @@
     a.ctx_followup = getText('ctx_followup');
     a.ctx_visao = getRadio('ctx_visao');
 
-    a.decisoes = getCheckboxes('q_decisoes');
+    a.decisoes = getCheckboxesWithOther('q_decisoes', 'q_decisoes_outro');
     a.decisao_seg = getRadio('q_decisao_seg');
     a.feeling = getText('q_feeling');
     a.info_desejada = getText('q_info_desejada');
@@ -1078,10 +1244,10 @@
     a.area_impacto = getRadio('q_area_impacto');
 
     a.tentou = getRadio('q_tentou');
-    a.sistemas_usados = getText('q_sistemas_usados');
-    a.nao_funcionou = getText('q_nao_funcionou');
+    a.sistemas_usados = getCheckboxesWithOther('q_sistemas_usados', 'q_sistemas_outro');
+    a.nao_funcionou = getCheckboxesWithOther('q_nao_funcionou', 'q_nao_funcionou_outro');
     a.indispensavel = getText('q_indispensavel');
-    a.uso_diario = getText('q_uso_diario');
+    a.uso_diario = getCheckboxes('q_uso_diario');
     a.troca = getText('q_troca');
     a.ouro = getText('q_ouro');
 
@@ -1168,71 +1334,12 @@
     document.getElementById('quizShell').classList.remove('active');
     document.getElementById('thankYou').classList.add('active');
 
-    // Monta summary
-    const sorted = ALL_PROBLEMS.map(p => ({ label: p.title, score: getScore(a, p) }))
-                                .sort((x, y) => y.score - x.score);
-
-    const base = [
-      ['Respondente', a.nome],
-      ['Setor', a.setor],
-      ['Tempo na clínica', a.tempo],
-      ['Decisões financeiras', a.financeiro],
-      ['Área de maior impacto', a.area_impacto],
-      ['Segurança nas decisões', a.decisao_seg],
-    ];
-
-    document.getElementById('summaryContent').innerHTML =
-      base.map(([l, v]) => `<div class="summary-item"><span class="summary-item-label">${l}</span><span class="summary-item-value">${v}</span></div>`).join('') +
-      `<div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(201,164,154,0.2);">
-        <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(253,250,248,0.4);margin-bottom:10px;">Top 5 dores por pontuação</div>
-        ${sorted.slice(0,5).map((p,i) => `<div class="summary-item"><span class="summary-item-label">${i+1}. ${p.label}</span><span class="summary-item-value">${p.score} pts</span></div>`).join('')}
-      </div>` +
-      (a.ouro !== '—' ? `<div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(201,164,154,0.2);"><div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(253,250,248,0.4);margin-bottom:8px;">Pergunta de Ouro</div><div style="font-size:12px;color:var(--rose-light);font-style:italic;line-height:1.6;">"${a.ouro}"</div></div>` : '');
+    // Summary not shown to user — data goes to Sheets only.
 
     // Envia para o Google Sheets em background
     sendToSheets(buildPayload(a));
   }
 
-  function downloadSummary() {
-    const a = window._answers || {};
-    const sep = '─'.repeat(60);
-    let txt = `DISCOVERY — CLÍNICA ESTÉTICA\nData: ${new Date().toLocaleDateString('pt-BR')}\n${sep}\n\n`;
-
-    txt += `BLOCO 1 — PERFIL\nNome / Cargo: ${a.nome}\nSetor: ${a.setor}\nTempo: ${a.tempo}\nDecisões financeiras: ${a.financeiro}\nFerramentas: ${a.ferramentas}\n\n`;
-
-    txt += `BLOCO 2-5 — PROBLEMAS\n(F=Frequência  I=Intensidade  $=Impacto financeiro  E=Esforço — escala 1 a 5)\n\n`;
-    ALL_PROBLEMS.forEach(p => {
-      const score = getScore(a, p);
-      txt += `${p.title}\n  F=${a[p.code+'_freq']}  I=${a[p.code+'_int']}  $=${a[p.code+'_imp']}  E=${a[p.code+'_esf']}  [total: ${score}]\n`;
-    });
-
-    txt += `\nCONTEXTOS\nAgenda — Visualização: ${a.ctx_agenda_visual}\nAgenda — Perdeu pacientes: ${a.ctx_perdeu}\nAgenda — Lista de espera: ${a.ctx_espera}\n`;
-    txt += `Financeiro — Controle: ${a.ctx_fin_controle}\nFinanceiro — Confia nos números: ${a.ctx_fin_confia}\nFinanceiro — Prevê caixa: ${a.ctx_fin_caixa}\n`;
-    txt += `Estoque — Tipo de controle: ${a.ctx_estoque}\nEstoque — Alerta de reposição: ${a.ctx_alerta}\n`;
-    txt += `Contratos — Perdeu prazo: ${a.ctx_prazo}\nContratos — Impacto: ${a.ctx_prazo_impacto}\n`;
-    txt += `Recebimentos — Perdeu: ${a.ctx_receb}\nRecebimentos — Motivo: ${a.ctx_receb_motivo}\n`;
-    txt += `Comercial — Follow-up atual: ${a.ctx_followup}\nGovernança — Visão estratégica: ${a.ctx_visao}\n`;
-
-    txt += `\nBLOCO 6 — DECISÃO E IMPACTO\nDecisões frequentes: ${a.decisoes}\nSegurança: ${a.decisao_seg}\nNo feeling: ${a.feeling}\nInformações desejadas: ${a.info_desejada}\n`;
-    txt += `Tempo/semana gestão financeira: ${a.tempo_fin}\nTempo/semana operacional: ${a.tempo_op}\nImpactos causados: ${a.impactos}\nÁrea de maior impacto: ${a.area_impacto}\n`;
-
-    txt += `\nBLOCO 7 — SOLUÇÕES E VALOR\nJá tentou: ${a.tentou}\nSistemas usados: ${a.sistemas_usados}\nO que não funcionou: ${a.nao_funcionou}\nPrecisa resolver: ${a.indispensavel}\nUso diário: ${a.uso_diario}\nO que faria trocar: ${a.troca}\n`;
-
-    txt += `\n${'═'.repeat(60)}\nPERGUNTA DE OURO:\n"${a.ouro}"\n\n`;
-
-    txt += `RANKING DE DORES (pontuação total):\n`;
-    ALL_PROBLEMS.map(p => ({ label: p.title, score: getScore(a, p) }))
-      .sort((x,y) => y.score - x.score)
-      .forEach((p, i) => { txt += `${i+1}. ${p.label} — ${p.score} pts\n`; });
-
-    const blob = new Blob([txt], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `discovery_clinica_${new Date().toISOString().slice(0,10)}.txt`;
-    link.click();
-    URL.revokeObjectURL(url);
-  }
 
   document.addEventListener('DOMContentLoaded', () => { renderDots(); });
 </script>
