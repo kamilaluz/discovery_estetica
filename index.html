@@ -449,12 +449,36 @@
 
     <div class="question-card">
       <div class="q-number">1.1</div>
+      <div class="q-text q-required">Nome da clínica</div>
+      <input class="q-input" type="text" id="q_clinica" placeholder="Ex.: Clínica Bella Estética">
+    </div>
+
+    <div class="question-card">
+      <div class="q-number">1.2</div>
+      <div class="q-text">Cidade / Estado <span style="font-weight:300;font-size:12px;color:var(--light-text);">(opcional)</span></div>
+      <input class="q-input" type="text" id="q_cidade" placeholder="Ex.: São Paulo / SP">
+    </div>
+
+    <div class="question-card">
+      <div class="q-number">1.3</div>
+      <div class="q-text q-required">Tamanho da clínica <span style="font-weight:300;font-size:12px;">(número de profissionais)</span></div>
+      <div class="radio-group">
+        <input type="radio" name="q_tamanho" id="tm1" value="Somente eu (solo)"><label for="tm1">Somente eu (solo)</label>
+        <input type="radio" name="q_tamanho" id="tm2" value="2–5 profissionais"><label for="tm2">2 a 5 profissionais</label>
+        <input type="radio" name="q_tamanho" id="tm3" value="6–15 profissionais"><label for="tm3">6 a 15 profissionais</label>
+        <input type="radio" name="q_tamanho" id="tm4" value="16–30 profissionais"><label for="tm4">16 a 30 profissionais</label>
+        <input type="radio" name="q_tamanho" id="tm5" value="+ de 30 profissionais"><label for="tm5">Mais de 30 profissionais</label>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <div class="q-number">1.4</div>
       <div class="q-text q-required">Qual é o seu nome e cargo?</div>
       <input class="q-input" type="text" id="q_nome" placeholder="Ex.: Ana Beatriz — Recepcionista">
     </div>
 
     <div class="question-card">
-      <div class="q-number">1.2</div>
+      <div class="q-number">1.5</div>
       <div class="q-text q-required">Qual é o seu setor principal?</div>
       <div class="radio-group">
         <input type="radio" name="q_setor" id="s1" value="Recepção / Atendimento"><label for="s1">Recepção / Atendimento ao Paciente</label>
@@ -469,7 +493,7 @@
     </div>
 
     <div class="question-card">
-      <div class="q-number">1.3</div>
+      <div class="q-number">1.6</div>
       <div class="q-text q-required">Há quanto tempo você trabalha na clínica?</div>
       <div class="radio-group">
         <input type="radio" name="q_tempo" id="t1" value="< 6 meses"><label for="t1">Menos de 6 meses</label>
@@ -480,7 +504,7 @@
     </div>
 
     <div class="question-card">
-      <div class="q-number">1.4</div>
+      <div class="q-number">1.7</div>
       <div class="q-text q-required">Você participa de decisões financeiras da clínica?</div>
       <div class="radio-group">
         <input type="radio" name="q_financeiro" id="fin1" value="Sim"><label for="fin1">Sim</label>
@@ -490,7 +514,7 @@
     </div>
 
     <div class="question-card">
-      <div class="q-number">1.5</div>
+      <div class="q-number">1.8</div>
       <div class="q-text q-required">Quais ferramentas você usa hoje? <span style="font-weight:300;font-size:12px;">(pode marcar mais de uma)</span></div>
       <div class="check-group">
         <input type="checkbox" id="f1" name="q_ferramentas" value="Agenda"><label for="f1">Agenda</label>
@@ -1070,6 +1094,7 @@
     // IDs of free-text fields that are ONLY required when their checkbox is checked.
     // These are excluded from the general textarea/input sweep.
     const conditionalInputIds = new Set([
+      'q_cidade',               // optional — never required
       'q_ferramentas_outro',
       'q_decisoes_outro',
       'q_sistemas_outro',
@@ -1207,6 +1232,9 @@
 
   function collectAnswers() {
     const a = {};
+    a.clinica = getText('q_clinica');
+    a.cidade  = getText('q_cidade');
+    a.tamanho = getRadio('q_tamanho');
     a.nome = getText('q_nome');
     a.setor = getRadio('q_setor');
     a.tempo = getRadio('q_tempo');
@@ -1263,21 +1291,45 @@
   const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbx15JcXtCVwz0UVOBJUj8iykHJZMy-nMALxZ7zKUwZ5yNWjzM0qSqUgX-28HQU71NjM2w/exec';
   // ─────────────────────────────────────────────────────────────────────────
 
-  async function sendToSheets(payload) {
+  function sendToSheets(payload) {
     if (!SHEETS_URL || SHEETS_URL.includes('COLE_AQUI')) {
       console.warn('Sheets: URL não configurada.');
       return;
     }
     try {
-      // Apps Script com no-cors exige que o body seja uma string simples em 'postData.contents'.
-      // Enviamos o JSON como valor de um campo de formulário para contornar a restrição de CORS.
-      const form = new FormData();
-      form.append('payload', JSON.stringify(payload));
-      await fetch(SHEETS_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: form,
-      });
+      // Método mais confiável com Apps Script: iframe + hidden form
+      // Evita todos os problemas de CORS/no-cors com fetch
+      const json = JSON.stringify(payload);
+
+      // Cria iframe invisível para receber a resposta (evita redirect)
+      const iframe = document.createElement('iframe');
+      iframe.name = '_sheets_target';
+      iframe.style.display = 'none';
+      document.body.appendChild(iframe);
+
+      // Cria form hidden apontando para o iframe
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = SHEETS_URL;
+      form.target = '_sheets_target';
+      form.style.display = 'none';
+
+      const input = document.createElement('input');
+      input.type  = 'hidden';
+      input.name  = 'payload';
+      input.value = json;
+      form.appendChild(input);
+
+      document.body.appendChild(form);
+      form.submit();
+
+      // Limpa após envio
+      setTimeout(() => {
+        document.body.removeChild(form);
+        document.body.removeChild(iframe);
+      }, 5000);
+
+      console.log('Sheets: dados enviados via form submit.');
     } catch (err) {
       console.warn('Sheets: falha no envio', err);
     }
@@ -1290,6 +1342,9 @@
 
     const row = {
       timestamp:    new Date().toISOString(),
+      clinica:      a.clinica,
+      cidade:       a.cidade,
+      tamanho:      a.tamanho,
       nome:         a.nome,
       setor:        a.setor,
       tempo:        a.tempo,
